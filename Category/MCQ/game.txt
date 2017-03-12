@@ -1,0 +1,80 @@
+CREATE TABLE kennels
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  kennel_name VARCHAR(100) NOT NULL,
+  kennel_city VARCHAR(100) NOT NULL,
+  phone VARCHAR(100) NOT NULL,
+  address VARCHAR(100) NOT NULL,
+  PRIMARY KEY (kennel_id)
+);
+
+CREATE TABLE meeting_forms
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  sire_pedigree_id INT NOT NULL,
+  dame_pedigree_id INT NOT NULL,
+  sire_owner_id INT NOT NULL,
+  dame_owner_id INT NOT NULL,
+  meeting_date DATE NOT NULL,
+ FOREIGN KEY (sire_pedigree_id) REFERENCES pedigree(id),
+ FOREIGN KEY (dame_pedigree_id ) REFERENCES pedigree(id) 
+ FOREIGN KEY (sire_owner_id) REFERENCES owners(id)
+ FOREIGN KEY (dame_owner_id) REFERENCES meeting_forms(id)
+ PRIMARY KEY (id)
+);
+
+CREATE TABLE permits
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  father_id INT NOT NULL,
+  mother_id INT NOT NULL,
+  meeting_forms_id INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (father_id ) REFERENCES pedigree(id),
+  FOREIGN KEY (mother_id ) REFERENCES pedigree(id)
+);
+
+CREATE TABLE owners
+(
+  id INT NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  display_name VARCHAR(100) NOT NULL,
+  national_id_number INT NOT NULL,
+  address VARCHAR(500) NOT NULL,
+  city VARCHAR(100) NOT NULL,
+  mobile VARCHAR(100) NOT NULL,
+  breeder INT NOT NULL,
+  website VARCHAR(100) NOT NULL,
+  kennel_id INT NOT NULL,
+  PRIMARY KEY (owner_id),
+  FOREIGN KEY (kennel_id) REFERENCES kennels(id)
+);
+
+CREATE TABLE pedigree
+(
+  id INT NOT NULL,
+  pedigree_name VARCHAR(100) NOT NULL,
+  owner_id INT NOT NULL,
+  gender VARCHAR(1010) NOT NULL,
+  birth_date DATE NOT NULL,
+  death_date DATE NOT NULL,
+  height INT NOT NULL,
+  head_size INT NOT NULL,
+  weight INT NOT NULL,
+  pedigree_color VARCHAR(100) NOT NULL,
+  kennel_id INT NOT NULL,
+  land_birth VARCHAR(100) NOT NULL,
+  land_standing VARCHAR(100) NOT NULL,
+  comments VARCHAR(100) NOT NULL,
+  image VARCHAR(100) NOT NULL,
+  father_id INT ,
+  mother_id INT ,
+  PRIMARY KEY (pedigree_id),
+  FOREIGN KEY (father_id) REFERENCES pedigree(id),
+  FOREIGN KEY (mother_id) REFERENCES pedigree(pedigree_id),
+  FOREIGN KEY (owner_id) REFERENCES owners(id),
+  FOREIGN KEY (kennel_id) REFERENCES kennels(id)
+);
